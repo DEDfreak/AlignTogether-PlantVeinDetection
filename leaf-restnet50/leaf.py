@@ -9,17 +9,26 @@ from torchvision.models.detection import (
     FasterRCNN_ResNet50_FPN_Weights,
 )
 from PIL import Image
+import cv2
+import numpy as np
 
 
 class LeafDataset(Dataset):
     def __init__(self, folder_name):
         self.folder_name = folder_name
         self.transform = transforms.ToTensor()
-
-        # Load JSON file
-        json_path = os.path.join(folder_name, "_annotations.coco.json")
+        
+        # Get the current script's directory
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        
+        # Construct the path to the JSON file using proper path joining
+        json_path = os.path.join(script_dir, folder_name, "_annotations.coco.json")
+        # # json_path = repr(json_path)
+        # print(json_path)
         with open(json_path, "r") as f:
             self.annotations = json.load(f)
+            
+        
 
         # Create image_id to annotations mapping
         self.image_to_anns = {}
@@ -40,9 +49,20 @@ class LeafDataset(Dataset):
         img_id = img_info["id"]
 
         # Load image
-        img_path = os.path.join(self.folder_name, img_info["file_name"])
+        # Get the current script's directory
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        img_path = os.path.join(script_dir, self.folder_name, img_info["file_name"])
         image = Image.open(img_path).convert("RGB")
-        image = self.transform(image)
+        # image = self.transform(image)
+        
+        # Convert PIL image to numpy for edge detection
+        image_np = np.array(image)
+        gray_image = cv2.cvtColor(image_np, cv2.COLOR_RGB2GRAY)
+        edges = cv2.Canny(gray_image, threshold1=100, threshold2=200)
+
+        # Convert back to PIL and transform to tensor
+        edge_image = Image.fromarray(edges).convert("RGB")
+        edge_image = self.transform(edge_image)
 
         # Get annotations
         boxes = []
@@ -65,7 +85,7 @@ class LeafDataset(Dataset):
 
         target = {"boxes": boxes, "labels": labels, "image_id": torch.tensor([img_id])}
 
-        return image, target
+        return edge_image, target
 
 
 def train():
