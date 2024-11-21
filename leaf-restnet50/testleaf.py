@@ -14,7 +14,7 @@ class_names = [
 def load_model(model_path):
     # Load model with the same architecture
     model = fasterrcnn_resnet50_fpn()
-    model.load_state_dict(torch.load(model_path, map_location="cpu"))
+    model.load_state_dict(torch.load(model_path, map_location="cpu" ))
     model.eval()
     return model
 
@@ -54,7 +54,7 @@ if __name__ == "__main__":
     model_path = (
         "leaf_model_epoch_10.pth"  # Replace with the actual model path if needed
     )
-    image_path = "test/pepper_healthy5_jpg.rf.7d03f8ceba15348f1ed3dff9dd587f6a.jpg"  # Replace with the path to the test image
+    image_path = "AlignTogether-PlantVeinDetection\leaf-restnet50\\test\pepper_healthy5_jpg.rf.7d03f8ceba15348f1ed3dff9dd587f6a.jpg"  # Replace with the path to the test image
 
     # Load the model
     model = load_model(model_path)
