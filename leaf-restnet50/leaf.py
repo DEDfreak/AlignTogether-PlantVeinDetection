@@ -16,8 +16,11 @@ class LeafDataset(Dataset):
         self.folder_name = folder_name
         self.transform = transforms.ToTensor()
 
+        # Get the current script's directory
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        
         # Load JSON file
-        json_path = os.path.join(folder_name, "_annotations.coco.json")
+        json_path = os.path.join(script_dir, folder_name, "_annotations.coco.json")
         with open(json_path, "r") as f:
             self.annotations = json.load(f)
 
