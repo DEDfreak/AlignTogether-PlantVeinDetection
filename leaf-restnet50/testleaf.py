@@ -89,7 +89,7 @@ if __name__ == "__main__":
     model = load_model(model_path)
 
     # Evaluate the model
-    print("Evaluating model performance...")
+    print("Evaluating model performance....")
     evaluate_model(model, test_image_paths, ground_truth_labels)
     
     

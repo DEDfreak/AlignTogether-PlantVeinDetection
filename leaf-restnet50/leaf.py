@@ -158,7 +158,7 @@ def train():
         torch.save(model.state_dict(), model_path)
         print(f"Model saved as {model_path}")
 
-        print("Training completed!")
+        print("Training completedd!")
 
     except Exception as e:
         print(f"An error occurred: {str(e)}")
