@@ -15,7 +15,7 @@ class_names = [
 def load_model(model_path):
     # Load model with the same architecture
     model = fasterrcnn_resnet50_fpn()
-    model.load_state_dict(torch.load(model_path, map_location="cpu"))
+    model.load_state_dict(torch.load(model_path, map_location="cpu" ))
     model.eval()
     return model
 
